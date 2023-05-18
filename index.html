@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>UNSW Classes</title>
+</head>
+<body>
+    <h1>UNSW Timetable</h1>
+    <button onclick="clearPage()">CLEAR courses for term</button>
+
+    <form>
+        <label for="term">I want to view the courses for term: </label>
+        <input type="text" id="term" name="term">
+    </form>
+    <button onclick="findCoursesForTerm(document.querySelector('#term').value)">Find Term</button>
+
+    <h2 id="coursesForTermTitle"></h2>
+    <h3 id="numCoursesForTerm"></h3>
+    <div id="coursesForTerm"></div>
+    
+    <hr/>
+
+    <form>
+        <label for="course">I want to view info for the course code: </label>
+        <input type="text" id="course" name="course">
+    </form>
+    <button onclick="findCourseInfo(document.querySelector('#course').value)">Find Term</button>    
+    
+    <h2 id="courseInfoTitle"></h2>
+    <div id="courseInfo"></div>
+    <script>
+       
+        const clearPage = () => {
+            document.getElementById("coursesForTermTitle").innerHTML = "";
+            document.getElementById("numCoursesForTerm").innerHTML = "";
+            document.getElementById("coursesForTerm").innerHTML = "";
+        }
+
+        const findCoursesForTerm = (term) => {
+            // Capitalise the first letter
+            const termInCapital = term.charAt(0).toUpperCase() + term.slice(1);
+
+            document.getElementById("coursesForTermTitle").innerHTML = "The courses for " + termInCapital + " are: ";
+
+            fetch('data.json')
+            .then((response) => {
+                return response.json();
+            })
+            .then((data) => {
+                var numCourses = 0;
+
+                var mainContainer = document.getElementById("coursesForTerm")
+                
+                for (var i = 0; i < data["timetableData"][termInCapital].length; i++) {
+                    var div = document.createElement("div")
+                    div.innerHTML = data["timetableData"][termInCapital][i]["courseCode"] + " - " + data["timetableData"][termInCapital][i]["name"];
+                    mainContainer.append(div)
+                    numCourses++;
+                }
+
+                document.getElementById("numCoursesForTerm").innerHTML = "There are " + numCourses + " courses!!";
+
+            })
+            .catch((error) => {
+                console.error("Error: ", error);
+            });
+        
+        }
+
+        const findCourseInfo = (courseCode) => {
+            // Capitalise the first 4 letters
+            document.getElementById("courseInfoTitle").innerHTML = "Info for the course code " + courseCode + ": ";
+        }
+
+        
+    </script>
+</body>
+</html>
