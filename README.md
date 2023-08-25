@@ -15,3 +15,7 @@ Change into the working directory where the `index.html` lives.
 Start your http server by issuing `http-server -c-1`
 
 This spins up a Node.js httpd which serves the files in your directory as static files accessible from http://localhost:8080
+
+## NOTE for TailwindCSS
+
+- For TailwindCSS to be applied to the tags in the index.html, run `npx tailwindcss -i ./src/input.css -o ./src/output.css --watch` in the root directory.

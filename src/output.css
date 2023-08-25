@@ -546,6 +546,10 @@ video {
   display: block;
 }
 
+.rounded {
+  border-radius: 0.25rem;
+}
+
 .border {
   border-width: 1px;
 }
@@ -555,8 +559,22 @@ video {
   line-height: 2.25rem;
 }
 
+.text-2xl {
+  font-size: 1.5rem;
+  line-height: 2rem;
+}
+
+.text-lg {
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+}
+
 .font-bold {
   font-weight: 700;
+}
+
+.italic {
+  font-style: italic;
 }
 
 .underline {
@@ -565,4 +583,14 @@ video {
 
 .outline {
   outline-style: solid;
+}
+
+body {
+  margin:20px;
+}
+
+.button {
+  background-color: antiquewhite;
+  padding: 5px;
+  border-radius: 4px;
 }

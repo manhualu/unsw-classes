@@ -6,28 +6,29 @@
 </head>
 <body>
     <h1 class="text-3xl font-bold underline">UNSW Timetable</h1>
-    <button onclick="clearPage()">CLEAR courses for term</button>
+    <button class="button" onclick="clearPage()">CLEAR courses for term</button>
 
     <form>
         <label for="term">I want to view the courses for term: </label>
-        <input type="text" id="term" name="term">
+        <input class="outline rounded" type="text" id="term" name="term">
     </form>
-    <button onclick="findCoursesForTerm(document.querySelector('#term').value)">Find Term</button>
+    <button class="button" onclick="findCoursesForTerm(document.querySelector('#term').value)">Find Term</button>
 
-    <h2 id="coursesForTermTitle"></h2>
-    <h3 id="numCoursesForTerm"></h3>
+    <h2 id="coursesForTermTitle" class="text-2xl bold"></h2>
+    <h3 id="numCoursesForTerm" class="text-lg italic"></h3>
     <div id="coursesForTerm"></div>
     
     <hr/>
 
     <form>
         <label for="course">I want to view info for the course code: </label>
-        <input type="text" id="course" name="course">
+        <input class="outline rounded" type="text" id="course" name="course">
     </form>
-    <button onclick="findCourseInfo(document.querySelector('#course').value)">Find Term</button>    
+    <button class="button" onclick="findCourseInfo(document.querySelector('#course').value)">Find Course Info</button>    
     
     <h2 id="courseInfoTitle"></h2>
     <div id="courseInfo"></div>
+    <div id="termsCourseOffered"></div>
     <script>
        
         const clearPage = () => {
@@ -67,8 +68,38 @@
         }
 
         const findCourseInfo = (courseCode) => {
+            
             // Capitalise the first 4 letters
-            document.getElementById("courseInfoTitle").innerHTML = "Info for the course code " + courseCode + ": ";
+            prettifiedCourseCode = courseCode.slice(0,4).toUpperCase() + courseCode.slice(4)
+            document.getElementById("courseInfoTitle").innerHTML = "Info for the course code " + prettifiedCourseCode + ": ";
+            
+            fetch('data.json')
+            .then((response) => {
+                return response.json();
+            })
+            .then((data) => {
+                var mainContainer = document.getElementById("courseInfo")
+                mainContainer.innerHTML = ""
+                var termsCourseOfferedContainer = document.getElementById("termsCourseOffered")
+                termsCourseOfferedContainer.innerHTML = ""
+
+                // Term is currently hardcoded, i.e. we are looking for the course in T2
+                // TODO: make the term based on the term the person is searching for
+                for (var i = 0; i < data["timetableData"]["T2"].length; i++) {
+                    if (data["timetableData"]["T2"][i]["courseCode"] == prettifiedCourseCode) {
+                        var div = document.createElement("div")
+                        var termsOffered = document.createElement("div")
+                        div.innerHTML = "Course Name - " + data["timetableData"]["T2"][i]["name"]
+                        termsOffered.innerHTML = "The course is offered in - " + data["timetableData"]["T2"][i]["termsOffered"]
+                        mainContainer.append(div)
+                        termsCourseOfferedContainer.append(termsOffered)
+                    }
+                }
+
+            })
+            .catch((error) => {
+                console.error("Error: ", error);
+            });
         }
 
         
