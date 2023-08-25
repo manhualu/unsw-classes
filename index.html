@@ -36,10 +36,9 @@
         }
 
         const findCoursesForTerm = (term) => {
-            // Capitalise the first letter
-            const termInCapital = term.charAt(0).toUpperCase() + term.slice(1);
+            const prettifiedTerm = "T" + term;
 
-            document.getElementById("coursesForTermTitle").innerHTML = "The courses for " + termInCapital + " are: ";
+            document.getElementById("coursesForTermTitle").innerHTML = "The courses for " + prettifiedTerm + " are: ";
 
             fetch('data.json')
             .then((response) => {
@@ -50,9 +49,9 @@
 
                 var mainContainer = document.getElementById("coursesForTerm")
                 
-                for (var i = 0; i < data["timetableData"][termInCapital].length; i++) {
+                for (var i = 0; i < data["timetableData"][prettifiedTerm].length; i++) {
                     var div = document.createElement("div")
-                    div.innerHTML = data["timetableData"][termInCapital][i]["courseCode"] + " - " + data["timetableData"][termInCapital][i]["name"];
+                    div.innerHTML = data["timetableData"][prettifiedTerm][i]["courseCode"] + " - " + data["timetableData"][prettifiedTerm][i]["name"];
                     mainContainer.append(div)
                     numCourses++;
                 }
